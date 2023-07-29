@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa811090031c1d488b720a1cd1f430c, type: 3}
   m_Name: EnemyOneDataObject
   m_EditorClassIdentifier: 
+  projectile: {fileID: 4651027081416265746, guid: 5cd56492509a403458fdb35eae9ea10e, type: 3}
   baseSpeed: 3
   baseHealth: 100
   closeRadiusX: 7
