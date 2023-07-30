@@ -35,6 +35,33 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1e0bc028-9bca-4bda-8cff-1475b7af0da2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackQ"",
+                    ""type"": ""Button"",
+                    ""id"": ""7881d795-9348-4fd3-8714-491b8fc3e2b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackE"",
+                    ""type"": ""Button"",
+                    ""id"": ""34f29e7f-6d44-4aef-8828-4a66f9db782f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +119,39 @@ public partial class @Controller: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""815da47e-2f9f-4189-8ec0-94177f725566"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40f85e93-3c9e-41ca-a6b0-59ca161d7fdc"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackQ"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0136e56-0c68-4c2a-80e6-bef865e6c93a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackE"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +161,9 @@ public partial class @Controller: IInputActionCollection2, IDisposable
         // PlayerKeyboard
         m_PlayerKeyboard = asset.FindActionMap("PlayerKeyboard", throwIfNotFound: true);
         m_PlayerKeyboard_Movement = m_PlayerKeyboard.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerKeyboard_Attack = m_PlayerKeyboard.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerKeyboard_AttackQ = m_PlayerKeyboard.FindAction("AttackQ", throwIfNotFound: true);
+        m_PlayerKeyboard_AttackE = m_PlayerKeyboard.FindAction("AttackE", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +226,17 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerKeyboard;
     private List<IPlayerKeyboardActions> m_PlayerKeyboardActionsCallbackInterfaces = new List<IPlayerKeyboardActions>();
     private readonly InputAction m_PlayerKeyboard_Movement;
+    private readonly InputAction m_PlayerKeyboard_Attack;
+    private readonly InputAction m_PlayerKeyboard_AttackQ;
+    private readonly InputAction m_PlayerKeyboard_AttackE;
     public struct PlayerKeyboardActions
     {
         private @Controller m_Wrapper;
         public PlayerKeyboardActions(@Controller wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_PlayerKeyboard_Movement;
+        public InputAction @Attack => m_Wrapper.m_PlayerKeyboard_Attack;
+        public InputAction @AttackQ => m_Wrapper.m_PlayerKeyboard_AttackQ;
+        public InputAction @AttackE => m_Wrapper.m_PlayerKeyboard_AttackE;
         public InputActionMap Get() { return m_Wrapper.m_PlayerKeyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +249,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @AttackQ.started += instance.OnAttackQ;
+            @AttackQ.performed += instance.OnAttackQ;
+            @AttackQ.canceled += instance.OnAttackQ;
+            @AttackE.started += instance.OnAttackE;
+            @AttackE.performed += instance.OnAttackE;
+            @AttackE.canceled += instance.OnAttackE;
         }
 
         private void UnregisterCallbacks(IPlayerKeyboardActions instance)
@@ -187,6 +265,15 @@ public partial class @Controller: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @AttackQ.started -= instance.OnAttackQ;
+            @AttackQ.performed -= instance.OnAttackQ;
+            @AttackQ.canceled -= instance.OnAttackQ;
+            @AttackE.started -= instance.OnAttackE;
+            @AttackE.performed -= instance.OnAttackE;
+            @AttackE.canceled -= instance.OnAttackE;
         }
 
         public void RemoveCallbacks(IPlayerKeyboardActions instance)
@@ -207,5 +294,8 @@ public partial class @Controller: IInputActionCollection2, IDisposable
     public interface IPlayerKeyboardActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnAttackQ(InputAction.CallbackContext context);
+        void OnAttackE(InputAction.CallbackContext context);
     }
 }

@@ -6,6 +6,6 @@ using UnityEngine;
 public class EnemyKamikazeData : ScriptableObject
 {
     public float baseSpeed;
-    [Range(0f,100f)]
+    [Range(0f, 100f)] 
     public float baseHealth;
 }

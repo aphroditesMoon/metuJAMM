@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,14 +11,50 @@ public class PlayerLoc : MonoBehaviour
 {
     public static PlayerLoc instance { get; private set; }
 
-    private Controller _controller;
+    [NonSerialized]
+    public Controller _controller;
     private Vector2 _moveVector = Vector2.zero;
     private Rigidbody2D _rigidbody2D;
 
     public PlayerData playerData;
 
+    [NonSerialized]
+    public float PlayerHealth;
+
+    [SerializeField] 
+    private Animator playerAnimator;
+
+    //sword
+    private float _swordTimer;
+    [SerializeField]
+    private float swordSpeed;
+    
+    //dagger
+    private float _daggerTimer;
+    [SerializeField] 
+    private float daggerSpeed;
+    
+    //mace
+    [SerializeField]
+    private GameObject mace;
+
+    private Vector3 mouseDirection;
+
+    private void GetMouseDirection()
+    {
+        Vector3 mouseScreenPosition = Input.mousePosition;
+
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, 0));
+
+        mouseDirection = mouseWorldPosition - transform.position;
+
+        mouseDirection.Normalize();
+    }
+
     private void Awake()
     {
+        Time.timeScale = 1f;
+        
         if (instance == null)
         {
             instance = this;
@@ -25,12 +63,20 @@ public class PlayerLoc : MonoBehaviour
         _controller = new Controller();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
-        playerData.baseHealth = playerData.baseHealth;
+        PlayerHealth = playerData.baseHealth;
     }
 
     private void FixedUpdate()
     {
         _rigidbody2D.velocity = _moveVector * playerData.baseSpeed;
+    }
+
+    private void Update()
+    {
+        AttackSword();
+        AttackDagger();
+        
+        GetMouseDirection();
     }
 
     private void OnEnable()
@@ -55,5 +101,80 @@ public class PlayerLoc : MonoBehaviour
     private void OnMovementCancelled(InputAction.CallbackContext value)
     {
         _moveVector = Vector2.zero;
+    }
+    
+    private void AttackSword()
+    {
+        if (_swordTimer <= 0f)
+        {
+            if (_controller.PlayerKeyboard.Attack.triggered)
+            {
+                if (mouseDirection.x >= 0 && mouseDirection.y >= 0)
+                {
+                    playerAnimator.SetTrigger("TopRightAttack");
+                    _swordTimer = swordSpeed;
+                }
+                else if (mouseDirection.x >= 0 && mouseDirection.y < 0)
+                {
+                    playerAnimator.SetTrigger("BottomRightAttack");
+                    _swordTimer = swordSpeed;
+                }
+                else if (mouseDirection.x < 0 && mouseDirection.y >= 0)
+                {
+                    playerAnimator.SetTrigger("TopLeftAttack");
+                    _swordTimer = swordSpeed;
+                }
+                else
+                {
+                    playerAnimator.SetTrigger("BottomLeftAttack");
+                    _swordTimer = swordSpeed;
+                }
+            }
+        } 
+        else
+        {
+            _swordTimer -= Time.deltaTime;
+        }
+    }
+
+    private void AttackDagger()
+    {
+        if (_daggerTimer <= 0f)
+        {
+            if (_controller.PlayerKeyboard.AttackQ.triggered)
+            {
+                if (mouseDirection.x >= 0 && mouseDirection.y >= 0)
+                {
+                    playerAnimator.SetTrigger("DaggerTopRight");
+                    _daggerTimer = daggerSpeed;
+                }
+                else if (mouseDirection.x >= 0 && mouseDirection.y < 0)
+                {
+                    playerAnimator.SetTrigger("DaggerBottomRight");
+                    _daggerTimer = daggerSpeed;
+                }
+                else if (mouseDirection.x < 0 && mouseDirection.y >= 0)
+                {
+                    playerAnimator.SetTrigger("DaggerTopLeft");
+                    _daggerTimer = daggerSpeed;
+                }
+                else
+                {
+                    playerAnimator.SetTrigger("DaggerBottomLeft");
+                    _daggerTimer = daggerSpeed;
+                }
+            }
+        } 
+        else
+        {
+            _daggerTimer -= Time.deltaTime;
+        }
+    }
+
+    public async void AttackMace()
+    {
+        mace.SetActive(true);
+        await Task.Delay(500);
+        mace.SetActive(false);
     }
 }

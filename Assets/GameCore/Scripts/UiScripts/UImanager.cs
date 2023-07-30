@@ -8,12 +8,10 @@ public class UImanager : MonoBehaviour
 {
     public PlayerData playerData;
     
-    public Image playerHealthBar;
+    public Slider playerHealthBar;
 
     private void Update()
     {
-        //playerHealthBar.transform.position = PlayerLoc.instance.transform.position;
-        
-        //playerHealthBar.fillAmount = playerData.baseHealth;
+        playerHealthBar.value = PlayerLoc.instance.PlayerHealth;
     }
 }

@@ -28,7 +28,11 @@ public class EnemyOneProjectile : MonoBehaviour
     {
         if (other.transform.gameObject.GetInstanceID() == PlayerLoc.instance.transform.gameObject.GetInstanceID())
         {
+            CameraShakeScript.instance.StartShake(200);
+            EnemyOneMonobehavior.instance.ParticleSystem.transform.position = transform.position;
+            EnemyOneMonobehavior.instance.ParticleSystem.Play();
             Destroy(gameObject);
+            PlayerLoc.instance.PlayerHealth -= 5f;
         }
     }
 }
