@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PlayerData : ScriptableObject
 {
+    public GameObject projectile;
+    
     public float baseSpeed;
     [Range(0f,100f)]
     public float baseHealth;

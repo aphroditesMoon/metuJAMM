@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee0e69d626b4044c888afc73eacf427, type: 3}
   m_Name: PlayerDataObject
   m_EditorClassIdentifier: 
+  projectile: {fileID: 4651027081416265746, guid: 34d75a56ea1dc9544a76e27626a47c98, type: 3}
   baseSpeed: 5
   baseHealth: 100

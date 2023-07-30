@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Schema;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,7 +39,8 @@ public class PlayerLoc : MonoBehaviour
     [SerializeField]
     private GameObject mace;
 
-    private Vector3 mouseDirection;
+    [NonSerialized]
+    public Vector3 mouseDirection;
 
     private void GetMouseDirection()
     {
@@ -111,22 +113,22 @@ public class PlayerLoc : MonoBehaviour
             {
                 if (mouseDirection.x >= 0 && mouseDirection.y >= 0)
                 {
-                    playerAnimator.SetTrigger("TopRightAttack");
+                    playerAnimator.SetTrigger("TopLeftAttack");
                     _swordTimer = swordSpeed;
                 }
                 else if (mouseDirection.x >= 0 && mouseDirection.y < 0)
                 {
-                    playerAnimator.SetTrigger("BottomRightAttack");
+                    playerAnimator.SetTrigger("TopLeftAttack");
                     _swordTimer = swordSpeed;
                 }
                 else if (mouseDirection.x < 0 && mouseDirection.y >= 0)
                 {
-                    playerAnimator.SetTrigger("TopLeftAttack");
+                    playerAnimator.SetTrigger("TopRightAttack");
                     _swordTimer = swordSpeed;
                 }
                 else
                 {
-                    playerAnimator.SetTrigger("BottomLeftAttack");
+                    playerAnimator.SetTrigger("TopRightAttack");
                     _swordTimer = swordSpeed;
                 }
             }
