@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 4651027081416265746, guid: 34d75a56ea1dc9544a76e27626a47c98, type: 3}
   baseSpeed: 5
-  baseHealth: 100
+  baseHealth: 250

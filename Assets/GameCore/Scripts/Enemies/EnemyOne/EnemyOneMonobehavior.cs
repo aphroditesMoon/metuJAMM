@@ -51,6 +51,7 @@ public class EnemyOneMonobehavior : MonoBehaviour
         
         if (OneHealth <= 0)
         {
+            PlayerLoc.instance.sfxS[1].Play();
             gameObject.SetActive(false);
         }
         
@@ -74,6 +75,7 @@ public class EnemyOneMonobehavior : MonoBehaviour
     {
         if (timeBtwShots <= 0)
         {
+            PlayerLoc.instance.sfxS[0].Play();
             var a = Instantiate(EnemyOneData.projectile, transform.position, quaternion.identity);
             timeBtwShots = startTimeBtwShots;
         }

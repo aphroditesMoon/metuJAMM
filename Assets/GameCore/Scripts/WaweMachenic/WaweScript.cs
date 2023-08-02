@@ -11,8 +11,14 @@ public class WaweScript : MonoBehaviour
     public GameObject[] objectsToSwitch;
     private int currentObjectIndex = 0;
 
+    public AudioSource winSoruce;
+
+    private float timer = 0.0f;
+
     private void Start()
     {
+        timer = 0.0f;
+        
         // Başlangıçta sadece ilk GameObject aktif olsun, diğerleri pasif.
         for (int i = 0; i < objectsToSwitch.Length; i++)
         {
@@ -33,8 +39,12 @@ public class WaweScript : MonoBehaviour
 
             if (currentObjectIndex == objectsToSwitch.Length - 1)
             {
-                Time.timeScale = 0f;
-                ChangeToNextScene();
+                timer += Time.deltaTime;
+                winSoruce.Play();
+                if (timer > 5f)
+                {
+                    ChangeToNextScene();
+                }
             }
             else
             {

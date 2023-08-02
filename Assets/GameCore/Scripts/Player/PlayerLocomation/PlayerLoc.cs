@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerLoc : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class PlayerLoc : MonoBehaviour
 
     [NonSerialized]
     public Vector3 mouseDirection;
+    
+    public AudioSource[] sfxS;
 
     private void GetMouseDirection()
     {
@@ -75,6 +78,12 @@ public class PlayerLoc : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerHealth <= 0)
+        {
+            sfxS[2].Play();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        
         AttackSword();
         AttackDagger();
         
